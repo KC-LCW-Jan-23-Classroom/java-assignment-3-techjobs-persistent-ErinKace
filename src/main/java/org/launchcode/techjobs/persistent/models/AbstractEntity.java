@@ -15,7 +15,6 @@ public abstract class AbstractEntity {
     private int id;
     @NotBlank
     @Size(min=3,max=90)
-
     private String name;
 
     public int getId() {
