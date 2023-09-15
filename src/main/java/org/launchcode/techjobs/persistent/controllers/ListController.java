@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by LaunchCode
@@ -41,26 +42,24 @@ public class ListController {
 
     @RequestMapping("")
     public String list(Model model) {
-
+        model.addAttribute("employers", employerRepository.findAll());
+        model.addAttribute("skills", skillRepository.findAll());
         return "list";
     }
 
     @RequestMapping(value = "jobs")
     public String listJobsByColumnAndValue(Model model, @RequestParam String column, @RequestParam String value) {
         Iterable<Job> jobs;
-        Iterable<Employer> employers;
-        Iterable<Skill> skills;
         if (column.toLowerCase().equals("all")){
             jobs = jobRepository.findAll();
-            employers = employerRepository.findAll();
-            skills = skillRepository.findAll();
             model.addAttribute("title", "All Jobs");
         } else {
             jobs = JobData.findByColumnAndValue(column, value, jobRepository.findAll());
             model.addAttribute("title", "Jobs with " + columnChoices.get(column) + ": " + value);
         }
         model.addAttribute("jobs", jobs);
-        model.addAttribute("employers", employers);
+        model.addAttribute("employers", employerRepository.findAll());
+        model.addAttribute("skills", skillRepository.findAll());
 
         return "list-jobs";
     }
